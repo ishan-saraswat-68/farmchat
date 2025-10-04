@@ -17,8 +17,10 @@ function App() {
       </div>
     )
   }
-  return (<div>{room ? (
-    <Chat />
+  return (
+  <>
+  {room ? (
+    <Chat room={room}/>
   ) : (
     <div className="room">
       <label>Enter Room Name :</label>
@@ -26,7 +28,10 @@ function App() {
       <button onClick={() => setRoom(roomInputRef.current.value)}>
         Enter Chat</button>
     </div>)}
-  </div>
+    <div className='sign-out'>
+      <button onClick={}>Sign Out</button>
+    </div>
+  </>
   );
 }
 
