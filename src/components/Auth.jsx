@@ -4,19 +4,18 @@ import Cookies from "universal-cookie"
 const cookies = new Cookies()
 
 export const Auth = (props) => {
-    const { setIsAuth } =props;
+    const { setIsAuth } = props;
 
     const signInWithGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
             console.log("Sign in successful:", result)
-            cookies.set("auth-token", result.user.refreshToken)
+            // Use accessToken instead of refreshToken for better security
+            cookies.set("auth-token", result.user.accessToken)
             setIsAuth(true)
         } catch (error) {
-            console.error(error);
+            console.error("Authentication error:", error);
         }
-        
-           
     }
     
     return (

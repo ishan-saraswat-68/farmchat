@@ -6,6 +6,7 @@ body {
 .App {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
   flex-direction: column;
@@ -26,6 +27,9 @@ body {
 .room {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .room label {
@@ -44,6 +48,7 @@ body {
   text-align: center;
   margin: 5px;
 }
+
 .room button {
   width: 210px;
   height: 40px;
@@ -59,5 +64,43 @@ body {
 }
 
 .sign-out {
-  margin-top: 50px;
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.sign-out button {
+  padding: 10px 20px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sign-out button:first-child {
+  background-color: #666;
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.auth p {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.auth button {
+  padding: 15px 30px;
+  font-size: 18px;
+  background-color: #3b5998;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
