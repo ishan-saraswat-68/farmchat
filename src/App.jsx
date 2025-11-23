@@ -10,6 +10,7 @@ function App() {
   const cookies = new Cookies()
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"))
   const [room, setRoom] = useState("")
+  const [roomPassword, setRoomPassword] = useState("")
   const roomInputRef = useRef(null)
 
   const handleSignOut = async () => {
@@ -18,6 +19,7 @@ function App() {
       cookies.remove("auth-token")
       setIsAuth(false)
       setRoom("")
+      setRoomPassword("")
     } catch (error) {
       console.error("Sign out error:", error)
     }
@@ -26,7 +28,7 @@ function App() {
   if (!isAuth) {
     return (
       <div className="App">
-        <Auth setIsAuth={setIsAuth}/>
+        <Auth setIsAuth={setIsAuth} />
       </div>
     )
   }
@@ -35,9 +37,9 @@ function App() {
     <>
       {room ? (
         <div>
-          <Chat room={room}/>
+          <Chat room={room} roomPassword={roomPassword} />
           <div className='sign-out'>
-            <button onClick={() => setRoom("")}>Leave Room</button>
+            <button onClick={() => { setRoom(""); setRoomPassword(""); }}>Leave Room</button>
             <button onClick={handleSignOut}>Sign Out</button>
           </div>
         </div>
@@ -45,6 +47,13 @@ function App() {
         <div className="room">
           <label>Enter Room Name:</label>
           <input ref={roomInputRef} />
+          <label style={{ marginTop: '10px', display: 'block' }}>Enter Room Password:</label>
+          <input
+            type="password"
+            onChange={(e) => setRoomPassword(e.target.value)}
+            value={roomPassword}
+            placeholder="Optional (for encryption)"
+          />
           <button onClick={() => setRoom(roomInputRef.current.value)}>
             Enter Chat
           </button>
