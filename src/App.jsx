@@ -5,8 +5,10 @@ import Cookies from 'universal-cookie'
 import { Chat } from './components/chat.jsx'
 import { signOut } from 'firebase/auth'
 import { auth } from './firebase-config.js'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import DebugEncrypted from './pages/DebugEncrypted.jsx'
 
-function App() {
+function Home() {
   const cookies = new Cookies()
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"))
   const [room, setRoom] = useState("")
@@ -63,6 +65,17 @@ function App() {
         </div>
       )}
     </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/debug/encrypted" element={<DebugEncrypted />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
