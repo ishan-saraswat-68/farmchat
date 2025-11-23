@@ -78,6 +78,7 @@ export const Chat = (props) => {
                 createdAt: serverTimestamp(),
                 user: auth.currentUser.displayName || "Anonymous",
                 room,
+                userId: auth.currentUser.uid // Add user ID for better identification
             });
             setNewMessage("");
             setError(null);
@@ -85,6 +86,13 @@ export const Chat = (props) => {
             console.error("Error sending message:", error);
             setError("Failed to send message: " + error.message);
         }
+    }
+
+    // Check if message is from current user
+    const isCurrentUser = (messageUser) => {
+        return auth.currentUser && 
+            (messageUser === auth.currentUser.displayName || 
+             messageUser === auth.currentUser.email);
     }
 
     if (loading) {
@@ -107,14 +115,7 @@ export const Chat = (props) => {
             </div>
             
             {error && (
-                <div className="error" style={{
-                    backgroundColor: '#fff3cd',
-                    border: '1px solid #ffeaa7',
-                    color: '#856404',
-                    padding: '15px',
-                    margin: '10px',
-                    borderRadius: '5px'
-                }}>
+                <div className="error">
                     {error}
                 </div>
             )}
@@ -123,17 +124,30 @@ export const Chat = (props) => {
                 {messages.length === 0 && !error ? (
                     <div className="no-messages">No messages yet. Start the conversation!</div>
                 ) : (
-                    messages.map((message) => (
-                        <div key={message.id} className="message">
-                            <span className="user">{message.user}:</span> 
-                            <span className="text">{message.text}</span>
-                            {message.createdAt && (
-                                <span className="timestamp">
-                                    {new Date(message.createdAt.seconds * 1000).toLocaleTimeString()}
-                                </span>
-                            )}
-                        </div>
-                    ))
+                    messages.map((message) => {
+                        const isSender = isCurrentUser(message.user);
+                        return (
+                            <div 
+                                key={message.id} 
+                                className={`message ${isSender ? 'sender' : 'receiver'}`}
+                            >
+                                <div className="message-content">
+                                    {!isSender && (
+                                        <span className="user">{message.user}</span>
+                                    )}
+                                    <span className="text">{message.text}</span>
+                                    {message.createdAt && (
+                                        <span className="timestamp">
+                                            {new Date(message.createdAt.seconds * 1000).toLocaleTimeString([], { 
+                                                hour: '2-digit', 
+                                                minute: '2-digit' 
+                                            })}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })
                 )}
             </div>
             
